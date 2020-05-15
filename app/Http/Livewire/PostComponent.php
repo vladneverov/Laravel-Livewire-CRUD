@@ -3,18 +3,21 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use App\Post;
 
 class PostComponent extends Component
 {
-    public $posts, $title, $description, $selected_id;
+    use WithPagination;
+
+    public $title, $description, $selected_id;
     public $updateMode = false;
 
     public function render()
     {
-        $this->posts = Post::all();
+        $posts = Post::latest()->paginate(4);
 
-        return view('livewire.posts.component');
+        return view('livewire.posts.component', ['posts' => $posts]);
     }
 
     private function resetInput()
